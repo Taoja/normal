@@ -59,8 +59,7 @@ function resetOptions (md, env) {
         new HtmlWebpackPlugin({ //入口配置
         filename: `${i}.html`,// 生成文件名
         template: 'index.html', // 模板文件
-        chunks: [i],
-        path: `${config.default.env[env].mpaas_domainName}/${config.default.env[env].mpaas_appId_workspaceId}`
+        chunks: [i]
       })
     )
   }
