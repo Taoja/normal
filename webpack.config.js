@@ -1,3 +1,5 @@
+const VueLoaderPlugin = require('vue-loader/lib/plugin')
+
 const path = require('path')
 function resolve (e) {
   return path.resolve(__dirname, e)
@@ -37,7 +39,62 @@ const config = {
     },
     global: {
       host: 'http://cn-hangzhou-mdsweb.cloud.alipay.com'
-    }
+    },
+    plugins: [
+      new VueLoaderPlugin(), //vue加载器
+    ],
+    loader: [
+      {
+        test: /\.(css|scss)$/, //css解析器
+        use: ['style-loader', 'css-loader', {
+          loader: 'postcss-loader',
+          options: {
+            ident: 'postcss',
+            plugins: [
+              require('autoprefixer')({
+                  browsers: ['iOS >= 7', 'Android >= 4.1']
+              })
+            ]
+          }
+        }]
+      },
+      {
+        test: /\.(jpg|png|svg|gif|jpeg)$/,
+        use: [
+          {
+            loader: 'url-loader', //url解析器
+            options: {
+              limit:10, // 是把小于500000B的文件打成Base64的格式，写入JS。
+              name: 'images/[name]-[hash].[ext]'
+            }
+          }
+        ]
+      },
+      {
+        test: /\.stylus$/,
+        use: [{
+          loader: "style-loader"
+        }, {
+          loader: "css-loader"
+        },{
+          loader: "stylus-loader"
+        }]
+      },
+      {
+        test: /\.scss$/,//sass解析器
+        loader: ['sass-loader']
+      },
+      {
+        test: /\.vue$/, //vue解析器
+        loader: ['vue-loader']
+      },
+      {
+        test: /\.js$/, //babel
+        use: {
+          loader: 'babel-loader'
+        }
+      }
+    ]
   },
   dev: {
     port: 8082,
