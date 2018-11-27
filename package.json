@@ -5,12 +5,11 @@
   "scripts": {
     "build": "node node_modules/vue-splitter multi",
     "dev": "node node_modules/vue-splitter multi development cross-env NODE_ENV=development",
-    "zips": "node ./build/zips.js"
+    "zips": "node node_modules/vue-splitter/bin/zips.js"
   },
   "author": "黄武韬（346792184@qq.com）",
   "license": "ISC",
   "devDependencies": {
-    "archiver": "^3.0.0",
     "autoprefixer": "^9.0.1",
     "babel-core": "^6.26.3",
     "babel-eslint": "^8.2.6",
