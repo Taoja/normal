@@ -1,4 +1,5 @@
 const VueLoaderPlugin = require('vue-loader/lib/plugin')
+const CopyWebpackPlugin = require('copy-webpack-plugin')
 
 const path = require('path')
 function resolve (e) {
@@ -42,6 +43,12 @@ const config = {
     },
     plugins: [
       new VueLoaderPlugin(), //vue加载器
+      new CopyWebpackPlugin([
+        { 
+          from:  resolve('static'), 
+          to: resolve(`dist/static`)
+        }
+      ])
     ],
     loader: [
       {
