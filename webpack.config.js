@@ -1,11 +1,14 @@
 const VueLoaderPlugin = require('vue-loader/lib/plugin')
-const CopyWebpackPlugin = require('copy-webpack-plugin')
 
 const path = require('path')
+const sourcemap = require('./build/sourcemap')
 function resolve (e) {
   return path.resolve(__dirname, e)
 }
 const config = {
+  afterBuild: function () {
+    sourcemap(__dirname, 'dist')
+  },
   dir: __dirname,
   default: {
     output: 'dist',
@@ -33,22 +36,11 @@ const config = {
         mpaas_appId_workspaceId: '98F6BCD302124_uat',
       }
     },
-    packageID: {
-      static: 20180000,
-      base: 20180101,
-      main: 20180102
-    },
     global: {
       host: 'http://cn-hangzhou-mdsweb.cloud.alipay.com'
     },
     plugins: [
       new VueLoaderPlugin(), //vue加载器
-      new CopyWebpackPlugin([
-        { 
-          from:  resolve('static'), 
-          to: resolve(`dist/static`)
-        }
-      ])
     ],
     loader: [
       {
@@ -109,7 +101,7 @@ const config = {
     devtool: 'eval'
   },
   build: {
-    devtool: false
+    devtool: 'source-map'
   }
 }
 

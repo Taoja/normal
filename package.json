@@ -5,7 +5,7 @@
   "scripts": {
     "build": "node node_modules/vue-splitter multi",
     "dev": "node node_modules/vue-splitter multi development cross-env NODE_ENV=development",
-    "zips": "node node_modules/vue-splitter/bin/zips.js"
+    "zips": "node ./build/zips.js"
   },
   "author": "黄武韬（346792184@qq.com）",
   "license": "ISC",
@@ -17,7 +17,6 @@
     "babel-plugin-syntax-dynamic-import": "^6.18.0",
     "babel-preset-env": "^1.7.0",
     "babel-preset-stage-2": "^6.24.1",
-    "copy-webpack-plugin": "^4.5.2",
     "cross-env": "^5.2.0",
     "css-loader": "^1.0.0",
     "eslint": "^5.2.0",
