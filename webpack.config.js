@@ -44,6 +44,18 @@ const config = {
     ],
     loader: [
       {
+        test: /\.(jpg|png|svg|gif|jpeg|woff2|woff|eot|ttf|tof|svg)$/,
+        use: [
+          {
+            loader: 'vue-splitter', //url解析器
+            options: {
+              limit: 500000, // 是把小于500000B的文件打成Base64的格式，写入JS。
+              name: 'images/[name]-[hash].[ext]',
+            }
+          }
+        ]
+      },
+      {
         test: /\.(css|scss)$/, //css解析器
         use: ['style-loader', 'css-loader', {
           loader: 'postcss-loader',
@@ -56,18 +68,6 @@ const config = {
             ]
           }
         }]
-      },
-      {
-        test: /\.(jpg|png|svg|gif|jpeg)$/,
-        use: [
-          {
-            loader: 'url-loader', //url解析器
-            options: {
-              limit:10, // 是把小于500000B的文件打成Base64的格式，写入JS。
-              name: 'images/[name]-[hash].[ext]'
-            }
-          }
-        ]
       },
       {
         test: /\.stylus$/,
