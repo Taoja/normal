@@ -28,12 +28,10 @@ const config = {
     },
     env: {
       sit: {
-        mpaas_domainName: 'cn-hangzhou-mdsweb.cloud.alipay.com',
-        mpaas_appId_workspaceId: '98F6BCD302124_sit',
+        env: 'sit'
       },
       uat: {
-        mpaas_domainName: '112.72.12.31:80',
-        mpaas_appId_workspaceId: '98F6BCD302124_uat',
+        env: 'uat'
       }
     },
     global: {
@@ -80,7 +78,7 @@ const config = {
         }]
       },
       {
-        test: /\.scss$/,//sass解析器
+        test: /\.(scss)$/,//sass解析器
         loader: ['sass-loader']
       },
       {
