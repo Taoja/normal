@@ -1,14 +1,14 @@
 {
   "name": "vue-split-multi",
   "version": "1.0.0",
-  "description": "多页面分包工程",
+  "description": "vue vue-multi-pages vue-multipage vue-multiple-pages vue-multiple",
   "scripts": {
     "build": "node node_modules/vue-splitter multi",
     "dev": "node node_modules/vue-splitter multi development cross-env NODE_ENV=development",
     "zips": "node ./build/zips.js"
   },
   "author": "黄武韬（346792184@qq.com）",
-  "license": "ISC",
+  "license": "346792184@qq.com",
   "devDependencies": {
     "autoprefixer": "^9.0.1",
     "babel-core": "^6.26.3",

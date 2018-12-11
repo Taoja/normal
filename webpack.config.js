@@ -20,7 +20,6 @@ const config = {
         '@j': resolve('src/common/js'),
         '@a': resolve('src/assets'),
         '@c': resolve('src/components'),
-        '@extend': resolve('src/components/extend'),
       },
     },
     externals: {
@@ -35,7 +34,7 @@ const config = {
       }
     },
     global: {
-      host: 'http://cn-hangzhou-mdsweb.cloud.alipay.com'
+      github: 'https://github.com/Taoja/v-turbo-normal'
     },
     plugins: [
       new VueLoaderPlugin(), //vue加载器
