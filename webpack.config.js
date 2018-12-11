@@ -68,16 +68,6 @@ const config = {
         }]
       },
       {
-        test: /\.stylus$/,
-        use: [{
-          loader: "style-loader"
-        }, {
-          loader: "css-loader"
-        },{
-          loader: "stylus-loader"
-        }]
-      },
-      {
         test: /\.(scss)$/,//sass解析器
         loader: ['sass-loader']
       },
