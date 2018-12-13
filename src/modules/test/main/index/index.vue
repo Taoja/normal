@@ -1,3 +1,3 @@
 <template>
-  <div>321</div>
+  <div><img src="@a/fail.png" alt=""></div>
 </template>
