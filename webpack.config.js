@@ -48,7 +48,7 @@ const config = {
             loader: 'url-loader', //url解析器
             options: {
               limit: 10, // 是把小于500000B的文件打成Base64的格式，写入JS。
-              name: 'images/[name]-[hash].[ext]',
+              name: 'assets/[name]-[hash].[ext]',
             }
           }
         ]
