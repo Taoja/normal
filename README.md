@@ -31,10 +31,10 @@ v-turbo-normal基于目前前端社区最新的Vue.js 2.0及webpack 4.0搭建，
     |   |   |-- extend
     |   |   |-- base
     |   |-- modules
-    |   |   |-- base
+    |   |   |-- turbo
     |   |   |   |-- index.js
-    |   |   |   |-- home
-    |   |   |       |-- page1
+    |   |   |   |-- wel
+    |   |   |       |-- come
     |   |   |           |-- index.vue 
     |   |   |           |-- index.js 
     |-- static
