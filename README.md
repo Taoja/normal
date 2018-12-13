@@ -37,7 +37,7 @@
 项目配置文件，详情参见[webpack配置](#webpack配置)
 
 ## index.html
-入口页面模板，可用于配置静态文件引入、meta信息、全局变量等公共属性
+入口页面模板，可用于配置静态文件引入、meta信息、全局变量等公共属性
 
 ## .babelrc
 babel配置文件，更多配置信息[babel.js](https://github.com/babel/babel)
