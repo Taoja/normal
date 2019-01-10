@@ -5,7 +5,7 @@
   "scripts": {
     "build": "node node_modules/dividing multi",
     "dev": "node node_modules/dividing multi development cross-env NODE_ENV=development",
-    "zips": "node ./build/zips.js"
+    "zips": "node node_modules/dividing/bin/zips.js"
   },
   "author": "黄武韬（346792184@qq.com）",
   "license": "346792184@qq.com",
