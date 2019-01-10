@@ -32,8 +32,5 @@
     "vue-splitter": "latest",
     "vue-style-loader": "^4.1.1",
     "vue-template-compiler": "^2.5.16"
-  },
-  "dependencies": {
-    "team-ui": "^1.0.13"
   }
 }
