@@ -2,8 +2,8 @@ const fs = require('fs')
 const path = require('path')
 const glob = require('glob')
 
-const resolve = function (a, b, e) {
-  return path.resolve(a, b, e)
+const resolve = function (a, e) {
+  return path.resolve(a, e)
 }
 
 function mkDir(dir) {
@@ -19,11 +19,11 @@ function mkDir(dir) {
   });
 }
 
-module.exports = function (a, b) {
-  var assetsRoot = path.resolve(a, b),
-      mapDest = resolve(a, b, 'sourceMap'), //.map文件的目标目录
-      cssMap = resolve(a, b, '**/*.css.map'), //所有.css.map
-      jsMap = resolve(a, b, '**/*.js.map'); //所有.js.map
+function move (a) {
+  var assetsRoot = path.resolve(a),
+      mapDest = resolve(a, 'sourceMap'), //.map文件的目标目录
+      cssMap = resolve(a, '**/*.css.map'), //所有.css.map
+      jsMap = resolve(a, '**/*.js.map'); //所有.js.map
   glob.sync(cssMap).forEach(function (file) { //删除所有.css.map
       fs.unlinkSync(file);
   });
@@ -33,3 +33,19 @@ module.exports = function (a, b) {
       fs.renameSync(file, dest);
   });
 }
+
+class sourcemap {
+  constructor(e) {
+    this.dir = e
+  }
+  apply(compiler) {
+    compiler.hooks.afterEmit.tap('sourcemap', () => {
+      var {options} = compiler
+      if (options.mode === 'production') {
+        move(this.dir)
+      }
+    })
+  }
+}
+
+module.exports = sourcemap;

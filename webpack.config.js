@@ -7,9 +7,6 @@ function resolve (e) {
 }
 
 const config = {
-  afterBuild: function () {
-    sourcemap(__dirname, 'dist')
-  },
   dir: __dirname,
   default: {
     output: 'dist',
@@ -39,6 +36,7 @@ const config = {
     },
     plugins: [
       new VueLoaderPlugin(), //vue加载器
+      new sourcemap(resolve('dist'))
     ],
     loader: [
       {
