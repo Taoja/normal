@@ -24,15 +24,26 @@ const config = {
       'vue': 'window.Vue',
     },
     env: {
-      sit: {
+      turbo: {
         env: 'sit'
-      },
-      uat: {
-        env: 'uat'
       }
     },
     global: {
-      github: 'https://github.com/Taoja/v-turbo-normal'
+      FrameWork: {
+        Github: 'https://github.com/Taoja/v-turbo-normal',
+        Issues: 'https://github.com/Taoja/v-turbo-normal/issues',
+        Document: 'https://github.com/Taoja/v-turbo-normal'
+      },
+      Bridge: {
+        Github: 'https://github.com/Taoja/v-turbo-bridge',
+        Issues: 'https://github.com/Taoja/v-turbo-bridge/issues',
+        Document: 'https://github.com/Taoja/v-turbo-bridge'
+      },
+      Turbo: {
+        Homepage: 'https://github.com/Taoja/v-turbo-normal',
+        Desk: 'https://github.com/Taoja/v-turbo-normal/issues',
+        Document: 'https://github.com/Taoja/v-turbo-normal'
+      }
     },
     plugins: [
       new VueLoaderPlugin(), //vue加载器
@@ -84,7 +95,8 @@ const config = {
   dev: {
     port: 8082,
     host: '0.0.0.0',
-    devtool: 'eval'
+    devtool: 'eval',
+    open: '/hello/turbo/index.html'
   },
   build: {
     devtool: 'source-map'

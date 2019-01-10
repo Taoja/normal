@@ -213,6 +213,7 @@ src/modules/下的文件夹为离线包名称、输入各离线包名可以实�
 + port - 实时调试模式监听端口号，默认8082
 + host - 实时调试模式监听ip，默认0.0.0.0 等效于localhost
 + devtool - sourcemap配置
++ open - 实时调试模式开启后自动开启的页面
 
 ## build
 编译模式相关配置
