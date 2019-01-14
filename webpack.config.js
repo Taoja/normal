@@ -2,6 +2,7 @@ const VueLoaderPlugin = require('vue-loader/lib/plugin')
 
 const path = require('path')
 const sourcemap = require('./build/sourcemap')
+const readConf = require('./build/readConf')
 function resolve (e) {
   return path.resolve(__dirname, e)
 }
@@ -46,6 +47,7 @@ const config = {
       }
     },
     plugins: [
+      new readConf(),
       new VueLoaderPlugin(), //vue加载器
       new sourcemap(resolve('dist'))
     ],
