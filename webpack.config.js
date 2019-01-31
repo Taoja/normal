@@ -54,11 +54,7 @@ const config = {
     loader: [
       {
         test: /\.(jpg|png|svg|gif|jpeg|woff2|woff|eot|ttf|tof|svg)$/,
-        use: [
-          {
-            loader: 'url-loader', //url解析器
-          }
-        ]
+        use: ['url-loader']
       },
       {
         test: /\.(css|scss)$/, //css解析器
