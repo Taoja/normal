@@ -1,4 +1,3 @@
-const output = require('./config/output')
 const modules = require('./config/module')
 const resolve = require('./config/resolve')
 const externals = require('./config/externals')
@@ -11,7 +10,7 @@ class config {
   webpack (env, packages, entrys, config) {
     if (!env) {env = 'turbo'}
     return {
-      output, //输出目录 {String}
+      output: 'dist', //输出目录 {String}
       module: modules, //loader加载器
       resolve, //解析
       externals, //扩展
