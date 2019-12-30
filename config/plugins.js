@@ -44,7 +44,7 @@ module.exports = function(env, entrys, config) {
       new HtmlWebpackPlugin({ //入口配置
         filename: `${item}.html`,// 生成文件名
         template: `template/${template}.html`, // 模板文件
-        chunks: [`${item}`, `${item.split('/')[0]}/assetSourceMap`],
+        chunks: [`${item}`],
         static: '../../static',
         hash: true
       })
