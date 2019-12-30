@@ -4,7 +4,7 @@ const VueLoaderPlugin = require('vue-loader/lib/plugin')
 const webpack = require('webpack')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
-
+const b64 = require('../build/base64toimage')
 const path = require('path')
 function resolve (e) {
   return path.resolve(__dirname, '../', e)
@@ -33,20 +33,25 @@ var global = JSON.stringify({ //全局变量
   }
 })
 
-module.exports = function(env, entrys) {
+module.exports = function(env, packages, entrys, config) {
   var HWPs = []
-  for (var item in entrys) {
+  for (let item in entrys) {
+    let dir = item.split('/')[0]
+    let pack = item.split('/')[1]
+    let page = item.split('/')[2]
+    let template = config[dir][pack][page].template || 'index'
     HWPs.push(
       new HtmlWebpackPlugin({ //入口配置
         filename: `${item}.html`,// 生成文件名
-        template: 'index.html', // 模板文件
-        chunks: [`${item}`, `${item.split('/')[0]}/chunk`],
+        template: `template/${template}.html`, // 模板文件
+        chunks: [`${item}`, `${item.split('/')[0]}/assetSourceMap`],
         static: '../../static',
         hash: true
       })
     )
   }
   return [
+    new b64(packages),
     new readConf(),
     new VueLoaderPlugin(), //vue加载器
     new sourcemap(resolve('dist')),

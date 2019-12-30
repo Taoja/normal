@@ -8,14 +8,14 @@ class config {
   get dir () {
     return __dirname
   }
-  webpack (env, packages, entrys) {
+  webpack (env, packages, entrys, config) {
     if (!env) {env = 'turbo'}
     return {
       output, //输出目录 {String}
       module: modules, //loader加载器
       resolve, //解析
       externals, //扩展
-      plugins: plugins.call({}, env, entrys), //插件
+      plugins: plugins.call({}, env, packages, entrys, config), //插件
       optimization: optimization.call({}, packages), //优化
       devServer: { //本地服务
         port: 8082,
