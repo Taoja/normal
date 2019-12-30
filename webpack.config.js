@@ -15,8 +15,8 @@ class config {
       module: modules, //loader加载器
       resolve, //解析
       externals, //扩展
-      plugins: plugins.call({}, env, packages, entrys, config), //插件
-      optimization: optimization.call({}, packages), //优化
+      plugins: plugins.call({}, env, entrys, config), //插件
+      optimization: optimization, //优化
       devServer: { //本地服务
         port: 8082,
         host: '0.0.0.0',

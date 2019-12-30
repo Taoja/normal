@@ -2,7 +2,12 @@ module.exports = {
   rules: [
     {
       test: /\.(jpg|png|svg|gif|jpeg|woff2|woff|eot|ttf|tof|svg)$/,
-      use: ['url-loader']
+      use: [{
+        loader: 'url-loader',
+        options: {
+          limit: 5000
+        }
+      }]
     },
     {
       test: /\.(css|scss)$/, //css解析器

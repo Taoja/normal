@@ -33,7 +33,7 @@ var global = JSON.stringify({ //全局变量
   }
 })
 
-module.exports = function(env, packages, entrys, config) {
+module.exports = function(env, entrys, config) {
   var HWPs = []
   for (let item in entrys) {
     let dir = item.split('/')[0]
@@ -51,7 +51,7 @@ module.exports = function(env, packages, entrys, config) {
     )
   }
   return [
-    new b64(packages),
+    new b64(),
     new readConf(),
     new VueLoaderPlugin(), //vue加载器
     new sourcemap(resolve('dist')),
