@@ -1,7 +1,10 @@
 
-class multiPlugins {
+class assetsPath {
+  constructor(callback) {
+    this.callback = callback
+  }
   apply(compiler) {
-    compiler.hooks.emit.tap('multiPlugins', (compilation) => {
+    compiler.hooks.emit.tap('assetsPath', (compilation) => {
       /**
        * asset资源
        * 输入输出关系表
@@ -24,7 +27,7 @@ class multiPlugins {
         /**
          * 获取每个输出所在包名
          */
-        var packageName = chunk.name.split('/')[0]
+        var packageName = this.callback(chunk.name)
         /**
          * 获取输出的所有输入
          */
@@ -84,4 +87,4 @@ class multiPlugins {
   }
 }
 
-module.exports = multiPlugins
+module.exports = assetsPath

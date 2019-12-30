@@ -4,7 +4,7 @@ const VueLoaderPlugin = require('vue-loader/lib/plugin')
 const webpack = require('webpack')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
-const multiPlugins = require('../build/webpack-multi-plugins')
+const assetsPath = require('../build/webpack-assets-path')
 const path = require('path')
 function resolve (e) {
   return path.resolve(__dirname, '../', e)
@@ -51,7 +51,9 @@ module.exports = function(env, entrys, config) {
     )
   }
   return [
-    new multiPlugins(),
+    new assetsPath((chunkName) => {
+      return chunkName.split('/')[0]
+    }),
     new readConf(),
     new VueLoaderPlugin(), //vue加载器
     new sourcemap(resolve('dist')),
