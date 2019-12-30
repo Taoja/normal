@@ -3,9 +3,8 @@
   "version": "1.0.0",
   "description": "vue vue-multi-pages vue-multipage vue-multiple-pages vue-multiple",
   "scripts": {
-    "build": "node node_modules/dividing multi",
-    "dev": "node node_modules/dividing multi development cross-env NODE_ENV=development",
-    "zips": "node node_modules/dividing/bin/zips.js"
+    "build": "node node_modules/dividing",
+    "dev": "node node_modules/dividing development cross-env NODE_ENV=development"
   },
   "author": "黄武韬（346792184@qq.com）",
   "license": "346792184@qq.com",
@@ -34,6 +33,7 @@
     "sass": "^1.10.1",
     "sass-loader": "^7.0.3",
     "style-loader": "^0.21.0",
+    "url-loader": "^3.0.0",
     "vue-loader": "^15.3.0",
     "vue-style-loader": "^4.1.1",
     "vue-template-compiler": "^2.5.16"
