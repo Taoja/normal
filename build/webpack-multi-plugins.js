@@ -1,7 +1,7 @@
 
-class b64toimage {
+class multiPlugins {
   apply(compiler) {
-    compiler.hooks.emit.tap('b64', (compilation) => {
+    compiler.hooks.emit.tap('multiPlugins', (compilation) => {
       /**
        * asset资源
        * 输入输出关系表
@@ -84,4 +84,4 @@ class b64toimage {
   }
 }
 
-module.exports = b64toimage
+module.exports = multiPlugins

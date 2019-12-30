@@ -4,7 +4,7 @@ const VueLoaderPlugin = require('vue-loader/lib/plugin')
 const webpack = require('webpack')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
-const b64 = require('../build/base64toimage')
+const multiPlugins = require('../build/webpack-multi-plugins')
 const path = require('path')
 function resolve (e) {
   return path.resolve(__dirname, '../', e)
@@ -51,7 +51,7 @@ module.exports = function(env, entrys, config) {
     )
   }
   return [
-    new b64(),
+    new multiPlugins(),
     new readConf(),
     new VueLoaderPlugin(), //vue加载器
     new sourcemap(resolve('dist')),
