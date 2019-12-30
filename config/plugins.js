@@ -4,7 +4,7 @@ const VueLoaderPlugin = require('vue-loader/lib/plugin')
 const webpack = require('webpack')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
-const assetsPath = require('../build/webpack-assets-path')
+const assetsRepath = require('../build/webpack-assets-repath')
 const path = require('path')
 function resolve (e) {
   return path.resolve(__dirname, '../', e)
@@ -51,7 +51,7 @@ module.exports = function(env, entrys, config) {
     )
   }
   return [
-    new assetsPath((chunkName) => {
+    new assetsRepath((chunkName) => {
       return chunkName.split('/')[0]
     }),
     new readConf(),

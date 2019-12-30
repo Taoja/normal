@@ -1,10 +1,10 @@
 
-class assetsPath {
+class assetsRepath {
   constructor(callback) {
     this.callback = callback
   }
   apply(compiler) {
-    compiler.hooks.emit.tap('assetsPath', (compilation) => {
+    compiler.hooks.emit.tap('assetsRepath', (compilation) => {
       /**
        * asset资源
        * 输入输出关系表
@@ -87,4 +87,4 @@ class assetsPath {
   }
 }
 
-module.exports = assetsPath
+module.exports = assetsRepath
