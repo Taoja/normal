@@ -10,7 +10,7 @@ module.exports = function (api) {
       }
     ]
   ]
-  const plugins = ['transform-vue-jsx', 'jsx-v-model', 'syntax-dynamic-import']
+  const plugins = ['transform-vue-jsx', 'jsx-v-model', '@babel/syntax-dynamic-import']
 
   return {
     presets,
