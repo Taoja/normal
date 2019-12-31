@@ -5,7 +5,8 @@ module.exports = {
       use: [{
         loader: 'url-loader',
         options: {
-          limit: 5000
+          limit: 5000,
+          esModule: false
         }
       }]
     },
@@ -16,9 +17,7 @@ module.exports = {
         options: {
           ident: 'postcss',
           plugins: [
-            require('autoprefixer')({
-                browsers: ['iOS >= 7', 'Android >= 4.1']
-            })
+            require('autoprefixer')
           ]
         }
       }]
