@@ -2,8 +2,19 @@
 class assetsRepath {
   constructor(callback) {
     this.callback = callback
+    this.assetNameByModuleId = {}
   }
+  
   apply(compiler) {
+    compiler.hooks.compilation.tap('assetsRepath', compilation => {
+      compilation.hooks.moduleAsset.tap('assetsRepath', (module, assetName) => {
+        module._source._value.replace(new RegExp(assetName, 'g'), `__assetsRepath__/${assetName}`)
+        this.assetNameByModuleId[module.id] = {
+          assetName,
+          module
+        }
+      })
+    })
     compiler.hooks.emit.tap('assetsRepath', (compilation) => {
       /**
        * asset资源
@@ -28,57 +39,46 @@ class assetsRepath {
          * 获取每个输出所在包名
          */
         var packageName = this.callback(chunk.name)
-        /**
-         * 获取输出的所有输入
-         */
-        chunk.getModules().forEach(module => {
-          /**
-           * 如果该输入的构建信息中包含assets
-           * @var assetName assets资源名 @example [hash].png
-           */
-          if (module.buildInfo.assets) {
-            var assetName = Object.keys(module.buildInfo.assets)[0]
-            ioMap[`${packageName}/${assetName}`] = compilation.assets[assetName]._value
+        for (let i in this.assetNameByModuleId) {
+          let item = this.assetNameByModuleId[i]
+          if (item.module.isInChunk(chunk)) {
+            let assetName = item.assetName
+            ioMap[`${packageName}/${assetName}`] = compilation.assets[assetName].source()
             deleteMap[`${assetName}`] = assetName
-            /**
-             * 循环输出的所有文件
-             * @param fileName 输出资源名称 @example hello/turbo/index.js
-             * @var source 输出资源字符串
-             */
             chunk.files.forEach((fileName) => {
               var source = compilation.assets[fileName].source()
               /**
                * 重置旧资源相对路径
                * @example '../../[hash].png' => '../../hello/[hash].png'
                */
-              source = source.replace(new RegExp(assetName, 'g'), `${packageName}/${assetName}`)
+              source = source.replace(new RegExp(`__assetsRepath__/${assetName}`, 'g'), `${packageName}\/${assetName}`)
               compilation.assets[fileName] = {
-                source() {
+                source () {
                   return source
                 },
-                size() {
+                size () {
                   return source.length
                 }
               }
             })
           }
-        })
+        }
       })
       /**
        * 删除旧assets资源
        */
-      for(let key in deleteMap) {
+      for (let key in deleteMap) {
         delete compilation.assets[key]
       }
       /**
        * 生成新assets资源
        */
-      for(let key in ioMap) {
+      for (let key in ioMap) {
         compilation.assets[key] = {
-          source() {
+          source () {
             return ioMap[key]
           },
-          size() {
+          size () {
             return ioMap[key].length
           }
         }
