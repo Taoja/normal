@@ -1,88 +1,140 @@
-
 class assetsRepath {
-  constructor(callback) {
+  /**
+   * 
+   * @param {Reg} reg 命中资源名的正则匹配
+   * @param {Function} callback 用以返回文件路径及相对路径的回调
+   */
+  constructor(reg, callback) {
+    this.reg = reg
     this.callback = callback
-    this.assetNameByModuleId = {}
+    /**
+     * runtimeChunk自定义相对路径变量
+     * @example
+     * {
+       'cgbRetail/ewm/index': [
+        '__assetsRepath__assetsiossvg = "../ewm/index/"',
+        '__assetsRepath__assetslogo2xpng = "../ewm/index/"',
+        ]
+     * }
+     */
+    this.runtimeTemplate = {}
+    /**
+     * 非runtimeCHunk自定义相对路径变量
+     * @example
+     * {
+       'cgbRetail/ewm/index': [
+        '__assetsRepath__assetsiossvg = "../ewm/index/"',
+        '__assetsRepath__assetslogo2xpng = "../ewm/index/"',
+        ]
+     * }
+     */
+    this.asyncTemplate = {}
+    this.pluginName = 'assetsRepath'
   }
-  
   apply(compiler) {
-    compiler.hooks.compilation.tap('assetsRepath', compilation => {
-      compilation.hooks.moduleAsset.tap('assetsRepath', (module, assetName) => {
-        module._source._value.replace(new RegExp(assetName, 'g'), `__assetsRepath__/${assetName}`)
-        this.assetNameByModuleId[module.id] = {
-          assetName,
-          module
-        }
-      })
-    })
-    compiler.hooks.emit.tap('assetsRepath', (compilation) => {
+    /**
+     * 开始构建
+     */
+    compiler.hooks.compilation.tap(this.pluginName, compilation => {
       /**
-       * asset资源
-       * 输入输出关系表
-       * @example {
-       *  包名/资源名: 资源buffer
-       * }
+       * 优化入口
        */
-      var ioMap = {}
-      /**
-       * 需要删除的资源表
-       * @example {
-       *  资源名: 资源名
-       * }
-       */
-      var deleteMap = {}
-      /**
-       * 循环遍历输出
-       */
-      compilation.chunks.forEach((chunk) => {
+      compilation.hooks.optimizeModules.tap(this.pluginName, (modules) => {
         /**
-         * 获取每个输出所在包名
+         * 循环所有入口
          */
-        var packageName = this.callback(chunk.name)
-        for (let i in this.assetNameByModuleId) {
-          let item = this.assetNameByModuleId[i]
-          if (item.module.isInChunk(chunk)) {
-            let assetName = item.assetName
-            ioMap[`${packageName}/${assetName}`] = compilation.assets[assetName].source()
-            deleteMap[`${assetName}`] = assetName
-            chunk.files.forEach((fileName) => {
-              var source = compilation.assets[fileName].source()
+        modules.forEach((module) => {
+          /**
+           * 匹配资源名
+           */
+          if (this.reg.test(module.rawRequest)) {
+            let assets = module.buildInfo.assets // 获取入口资源
+            let chunks = module.getChunks() // 获取入口涉及的所有chunk
+            let assetsName = Object.keys(assets)[0] // 获取入口资源名
+            let assetsInfo = module.buildInfo.assetsInfo[assetsName] //获取入口资源信息
+            let raw = assets[assetsName] // 获取入口资源raw值
+            module.buildInfo.assets = Object.create(null) // 修改当前入口资源
+            module.buildInfo.assetsInfo = new Map()
+            /**
+             * 循环涉及的所有chunk
+             */
+            for(let chunk of chunks) {
+              let {dir, publicPath} = this.callback(chunk.name) //获取用户传入的资源路径及访问地址
+              module.buildInfo.assets[`${dir}/${assetsName}`] = raw // 对chunk插入一条资源信息
+              module.buildInfo.assetsInfo.set(`${dir}/${assetsName}`, assetsInfo)
+              let fileName = assetsName.match(/[a-zA-Z0-9]/g).join('') //获取文件名（去除符号）
+              module.dependencies[0].expression = `__webpack_require__.__assetsRepath__${fileName}` // 更改资源相对路径为自定义变量
               /**
-               * 重置旧资源相对路径
-               * @example '../../[hash].png' => '../../hello/[hash].png'
+               * 判断当前chunk是否为入口chunk
+               * 即是否可以自定义runtime配置
                */
-              source = source.replace(new RegExp(`__assetsRepath__/${assetName}`, 'g'), `${packageName}\/${assetName}`)
-              compilation.assets[fileName] = {
-                source () {
-                  return source
-                },
-                size () {
-                  return source.length
-                }
+              if (chunk.hasEntryModule()) {
+                /**
+                 * @key 当前chunk名
+                 * @value 自定义相对路径赋值代码数组
+                 */
+                this.runtimeTemplate[chunk.name] = [
+                  ...this.runtimeTemplate[chunk.name] || [],
+                  `__webpack_require__.__assetsRepath__${fileName} = '${publicPath}';`
+                ]
+              } else {
+                /**
+                 * @key 当前chunk名
+                 * @value 自定义相对路径赋值代码数组
+                 */
+                this.asyncTemplate[chunk.name] = [
+                  ...this.asyncTemplate[chunk.name] || [],
+                  `__webpack_require__.__assetsRepath__${fileName} = '${publicPath}';`
+                ]
               }
-            })
+            }
           }
-        }
+        })
       })
       /**
-       * 删除旧assets资源
+       * 生成runtimeTemplate时的tapable钩子
        */
-      for (let key in deleteMap) {
-        delete compilation.assets[key]
-      }
-      /**
-       * 生成新assets资源
-       */
-      for (let key in ioMap) {
-        compilation.assets[key] = {
-          source () {
-            return ioMap[key]
-          },
-          size () {
-            return ioMap[key].length
-          }
+      compilation.mainTemplate.hooks.requireExtensions.tap(this.pluginName,(source, chunk) => {
+        /**
+         * 判断是否为页面入口chunk
+         * 判断你是否有runtime模板存在
+         */
+        if (chunk.name && this.runtimeTemplate[chunk.name] instanceof Array) {
+          /**
+           * 非入口模板
+           */
+          let asyncTemplate = []
+          /**
+           * 获取当前chunk下挂载的所有异步chunk
+           */
+          chunk.getAllAsyncChunks().forEach((asyncChunk) => {
+            let chunkName = asyncChunk.name
+            /**
+             * 判断异步模板中是否含有该异步chunk
+             */
+            if (this.asyncTemplate[chunkName] && this.asyncTemplate[chunkName] instanceof Array) {
+              asyncTemplate = [
+                ...asyncTemplate,
+                ...this.asyncTemplate[chunkName]
+              ]
+            }
+          })
+          /**
+           * 拼接runtimeTempalte
+           */
+          let buf = []
+          buf.push(source)
+          buf = [
+            ...buf,
+            ...this.runtimeTemplate[chunk.name],
+            ...asyncTemplate
+          ]
+          buf.join('\n')
+          return buf
+        } else {
+          return source
         }
-      }
+      })
     })
   }
 }

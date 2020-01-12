@@ -44,15 +44,18 @@ module.exports = function(env, entrys, config) {
       new HtmlWebpackPlugin({ //入口配置
         filename: `${item}.html`,// 生成文件名
         template: `template/${template}.html`, // 模板文件
-        chunks: [`${item}`],
+        chunks: [item],
         static: '../../static',
         hash: true
       })
     )
   }
   return [
-    new assetsRepath((chunkName) => {
-      return chunkName.split('/')[0]
+    new assetsRepath(/\.(jpg|png|svg|gif|jpeg|woff2|woff|eot|ttf|tof|svg)$/, (chunkName) => {
+      return {
+        dir: chunkName,
+        publicPath: `../../${chunkName}/`
+      }
     }),
     new readConf(),
     new VueLoaderPlugin(), //vue加载器

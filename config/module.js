@@ -5,8 +5,9 @@ module.exports = {
       use: [{
         loader: 'url-loader',
         options: {
-          limit: 5000,
-          esModule: false
+          limit: 10,
+          esModule: false,
+          name: 'assets/[name].[ext]'
         }
       }]
     },
