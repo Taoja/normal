@@ -47,7 +47,7 @@ class assetsRepath {
           /**
            * 匹配资源名
            */
-          if (this.reg.test(module.rawRequest)) {
+          if (this.reg.test(module.rawRequest) && module.buildInfo.assets) {
             let assets = module.buildInfo.assets // 获取入口资源
             let chunks = module.getChunks() // 获取入口涉及的所有chunk
             let assetsName = Object.keys(assets)[0] // 获取入口资源名
