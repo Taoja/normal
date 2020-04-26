@@ -45,8 +45,7 @@ module.exports = function(env, entrys, config) {
         filename: `${item}.html`,// 生成文件名
         template: `template/${template}.html`, // 模板文件
         chunks: [item],
-        static: '../../static',
-        hash: true
+        static: '../../static'
       })
     )
   }

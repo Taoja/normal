@@ -3,6 +3,7 @@ const resolve = require('./config/resolve')
 const externals = require('./config/externals')
 const plugins = require('./config/plugins')
 const optimization = require('./config/optimization')
+const path = require('path')
 class config {
   get dir () {
     return __dirname
@@ -10,7 +11,10 @@ class config {
   webpack (env, packages, entrys, config) {
     if (!env) {env = 'turbo'}
     return {
-      output: 'dist', //输出目录 {String}
+      output: {
+        path: path.resolve(__dirname, 'dist'),
+        filename: '[name].js?ver=[hash]'
+      }, //输出目录 {String}
       module: modules, //loader加载器
       resolve, //解析
       externals, //扩展
